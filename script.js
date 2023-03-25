@@ -17,7 +17,7 @@ const countDown = document.getElementById('countdown')
 
 startButton.addEventListener('click', startGame)
 
-let shuffledQuestions, currentQuestionIndex
+let questionsIndex = 0
 
 // Start game function
 function startGame() {
@@ -25,7 +25,7 @@ function startGame() {
     startButton.disabled = true;
     startButton.classList.add('hide')
     questionContainerElement.classList.remove('hide')
-    shuffledQuestions = questions.sort(() => Math.random() -.5)
+    questions[questionsIndex]
     currentQuestionIndex = 0
     startTimer()
     setNextQuestion()
@@ -33,7 +33,7 @@ function startGame() {
 
 function setNextQuestion() {
     resetState()
-    showQuestion(shuffledQuestions[currentQuestionIndex])
+    showQuestion(questions[currentQuestionIndex])
 }
 
 function showQuestion(question) {
@@ -42,8 +42,7 @@ function showQuestion(question) {
         const button = document.createElement('button')
         button.innerText = answers.text
         button.classList.add('btn')
-      
-
+        
         answerButtonsElement.appendChild(button)
     })
 }
@@ -53,6 +52,7 @@ function resetState() {
         answerButtonsElement.removeChild
         (answerButtonsElement.firstChild)
     }
+    
 }
 
 function wrongAnswer() {
@@ -67,7 +67,6 @@ function startTimer() {
         if (timerCount >= 0) {
             if (gameOver && timerCount > 0) {
                 clearInterval(timer);
-                highScore();
             }
         } else if (timerCount === 0) {
             clearInterval(timer);
@@ -80,7 +79,6 @@ function startTimer() {
 function gameOver() {
     
 }
-
 
 var questions = [
     {
