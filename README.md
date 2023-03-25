@@ -1,13 +1,13 @@
-#Quiz - Javascript
+# Quiz - Javascript
 
-##Description
+## Description
 This is a I have made a series of interactable pages to display JS skills
 
-##Usage
+## Usage
 To see the changes made to the code, please refer to commits under (https://github.com/PacoCasillas/code-quiz/commits?author=PacoCasillas)
 
-##License
+## License
 Please refer to the LICENSE in the repo.
 
-##Live application
+## Live application
 https://pacocasillas.github.io/code-quiz/
