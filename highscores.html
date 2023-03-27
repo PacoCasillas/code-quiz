@@ -5,31 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="style.css" rel="stylesheet" />
+    <script src="script.js" defer></script>
+    
     <title>Highscores</title>
   </head>
   <body>
-    <div class="container">
-      <div class="highscore-container"></div>
-      <div><h1>Highscores</h1></div>
-      <ol>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ol>
-      <textarea
-        name="print-highs"
-        id="highscores-text"
-        cols="30"
-        rows="1"
-      ></textarea>
-      <p>^ Initials</p>
+  
+      <div class="card">
+        <h1>Highscores</h1>
+        <form id="highscores-form" method="POST">
+          <label for="initials-text">Initials: </label>
+          <input type="text" placeholder="AB" name="initials-text" id="intials-text" />
+        </form>
+        <p>Highscores: <span id="highscores-list">0</span></p>
+        <ul id="highscores-list"></ul>
+    
+    </div>
+          
+        </form>
+      </div>
+      <div class="card">
     </div>
   </body>
 </html>

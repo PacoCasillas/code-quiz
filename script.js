@@ -1,86 +1,106 @@
-var startButton = document.getElementById('start-btn')
-var nextButton = document.getElementById('next-btn')
-var questionContainerElement = document.getElementById('question-container')
-var questionElement = document.getElementById('question')
-var answerButtonsElement = document.getElementById('answer-buttons')
+const startButton = document.getElementById('start-btn')
+const nextButton = document.getElementById('next-btn')
+const questionContainerElement = document.getElementById('question-container')
+const questionElement = document.getElementById('question')
+const answerButtonsElement = document.getElementById('answer-buttons')
+
+//timer
+
 
 var timerElement = document.getElementById('countdown')
 
 var timer;
 var timerCount;
-var gameOver;
-var highscores;
-
-var highscore = document.getElementById('highscores')
 
 const countDown = document.getElementById('countdown')
 
+let shuffledQuestions, currentQuestionIndex
+
 startButton.addEventListener('click', startGame)
+nextButton.addEventListener('click', () => {
+  currentQuestionIndex++
+  setNextQuestion()
+})
 
-let questionsIndex = 0
-
-// Start game function
 function startGame() {
-    timerCount = 60;
-    startButton.disabled = true;
-    startButton.classList.add('hide')
-    questionContainerElement.classList.remove('hide')
-    questions[questionsIndex]
-    currentQuestionIndex = 0
-    startTimer()
-    setNextQuestion()
+  timerCount = 60;
+  startButton.classList.add('hide')
+  shuffledQuestions = questions.sort(() => Math.random() - .5)
+  
+  currentQuestionIndex = 0
+  questionContainerElement.classList.remove('hide')
+  startTimer()
+  setNextQuestion()
 }
 
+
+
+
 function setNextQuestion() {
-    resetState()
-    showQuestion(questions[currentQuestionIndex])
+  resetState()
+  showQuestion(shuffledQuestions[currentQuestionIndex])
 }
 
 function showQuestion(question) {
-    questionElement.innerText = question.question
-    question.answers.forEach(answers => {
-        const button = document.createElement('button')
-        button.innerText = answers.text
-        button.classList.add('btn')
-        
-        answerButtonsElement.appendChild(button)
-    })
+  questionElement.innerText = question.question
+  question.answers.forEach(answer => {
+    const button = document.createElement('button')
+    button.innerText = answer.text
+    button.classList.add('btn')
+    if (answer.correct) {
+      button.dataset.correct = answer.correct
+    }
+    button.addEventListener('click', selectAnswer)
+    answerButtonsElement.appendChild(button)
+  })
 }
 
 function resetState() {
-    while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild
-        (answerButtonsElement.firstChild)
-    }
-    
+  clearStatusClass(document.body)
+  nextButton.classList.add('hide')
+  while (answerButtonsElement.firstChild) {
+    answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+  }
 }
 
-function wrongAnswer() {
-    timerCount--;
-    startButton.disabled = false;
+function selectAnswer(e) {
+  const selectedButton = e.target
+  const correct = selectedButton.dataset.correct
+  setStatusClass(document.body, correct)
+  Array.from(answerButtonsElement.children).forEach(button => {
+    setStatusClass(button, button.dataset.correct)
+  })
+  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+    nextButton.classList.remove('hide')
+  } else {
+    startButton.innerText = 'Restart'
+    startButton.classList.remove('hide')
+  }
+}
+
+function setStatusClass(element, correct) {
+  clearStatusClass(element)
+  if (correct) {
+    element.classList.add('correct')
+  } else {
+    element.classList.add('wrong')
+  }
+}
+
+function clearStatusClass(element) {
+  element.classList.remove('correct')
+  element.classList.remove('wrong')
 }
 
 function startTimer() {
     timer = setInterval(function() {
         timerCount--;
         timerElement.textContent = timerCount;
-        if (timerCount >= 0) {
-            if (gameOver && timerCount > 0) {
-                clearInterval(timer);
-            }
-        } else if (timerCount === 0) {
-            clearInterval(timer);
-        } else {
-            gameOver
-        }
+
     }, 1000);
 }
 
-function gameOver() {
-    
-}
-
-var questions = [
+const questions = [
     {
         question: 'Commonly used data types do not include:',
         answers : [
@@ -118,3 +138,15 @@ var questions = [
         ]
     },
 ]
+
+
+renderLastRegistered();
+
+const highScoresList = document.getElementById('highScoresList');
+const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+highScoresList.innerHTML = highScores
+  .map(score => {
+    return '<li class="high-score">${score.name}-${score.score}</li>';
+  })
+  .join("");
